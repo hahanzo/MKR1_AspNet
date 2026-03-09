@@ -1,0 +1,6 @@
+@MKR1_AspNet_HostAddress = http://localhost:5296
+
+GET {{MKR1_AspNet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
