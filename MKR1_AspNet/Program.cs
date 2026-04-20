@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using MKR1_AspNet;
 using MKR1_AspNet.Entities;
+using MKR2_AspNet.Entities;
+using MKR2_AspNet.NewFolder;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<CustomExceptionFilter>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -30,8 +33,17 @@ using (var scope = app.Services.CreateScope())
     if (!context.Classrooms.Any())
     {
         context.Classrooms.Add(new Classroom { Name = "Default Class" });
-        context.SaveChanges();
     }
+
+    if (!context.Books.Any())
+    {
+        context.Books.AddRange(
+            new Book { Title = "Clean Code", Author = "Robert C. Martin" },
+            new Book { Title = "Refactoring", Author = "Martin Fowler" }
+        );
+    }
+
+    context.SaveChanges();
 }
 
 app.UseHttpsRedirection();
